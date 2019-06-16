@@ -12,4 +12,4 @@ def score():
     score = score_message(message)
     return template("index", score=score, message=message)
 
-run(host='localhost', port=8080, debug=True)
+run(host='0.0.0.0', port=80, debug=False)
