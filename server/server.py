@@ -1,15 +1,21 @@
-from bottle import route, run, template, request
+from bottle import route, run, template, request, post, static_file
 from score import score_message
+import json
 
 @route('/')
 def index():
-    return template("index", message = "", score=None)
+    return static_file("index.html", root='./client/build/')
 
-@route("/score")
+@route('/static/<filepath:path>')
+def server_static(filepath):
+    return static_file(filepath, root='./client/build/static')
+
+@post("/score")
 def score():
-    message = request.query.get("message")
+    message = request.json.get("message")
     print(message)
-    score = score_message(message)
-    return template("index", score=score, message=message)
+    score, breakdown = score_message(message)
+    breakdown["total"] = score
+    return json.dumps(breakdown)
 
 run(host='0.0.0.0', port=80, debug=False)

@@ -7,23 +7,47 @@
 """
 import logging
 from trigrams import generate_trigrams
+from typing import Tuple, List
 
 logging.basicConfig(level="DEBUG")
 logger = logging.getLogger("ACNL")
 
 
-
-def score_message(message: str) -> int:
+def score_message(message: str) -> Tuple[int, List]:
+    breakdown = {}
     score = 0
-    score += checkPunctuation(message)
-    score += check_trigrams(message)
-    score += check_capital(message)
-    score += check_for_repetition(message)
-    score += check_space_ratio(message)
-    score += check_length(message)
-    score += check_spaces(message)
+
+    punc_score = checkPunctuation(message)
+    breakdown["punctuationScore"] = punc_score
+    score += punc_score
+
+    tri_score = check_trigrams(message)
+    breakdown["trigramScore"] = tri_score
+    score += tri_score
+
+    cap_score = check_capital(message)
+    breakdown["capitalScore"] = cap_score
+    score += cap_score
+
+    rep_score = check_for_repetition(message)
+    breakdown["repetitionScore"] = rep_score
+    score += rep_score
+
+    sp_ratio_score = check_space_ratio(message)
+    breakdown["spaceRatioScore"] = sp_ratio_score
+    score += sp_ratio_score
+
+    len_score = check_length(message)
+    breakdown["lengthScore"] = len_score
+    score += len_score
+
+    sp_score = check_spaces(message)
+    breakdown["spaceScore"] = sp_score
+    score += sp_score
+
     logger.info("Final score: %s " % score)
-    return score
+    return score, breakdown
+
 
 # A
 def checkPunctuation(message: str) -> int:
@@ -74,6 +98,7 @@ def check_trigrams(message: str) -> int:
     logger.info("Returned score: %s" % score)
     return score
 
+
 #C
 def check_capital(message: str) -> int:
     logger.info("Checking first letter for capital")
@@ -88,6 +113,7 @@ def check_capital(message: str) -> int:
             break
     logger.info("Returned score: %s" % score)
     return score
+
 
 #D
 def check_for_repetition(message: str) -> int:
@@ -106,6 +132,7 @@ def check_for_repetition(message: str) -> int:
     logger.info("Score not affected")
     return 0
 
+
 #E
 def check_space_ratio(message: str) -> int:
     logger.info("Checking ratio of characters to spaces")
@@ -122,6 +149,7 @@ def check_space_ratio(message: str) -> int:
         score += 20
     logger.info("Returned score: %s" % score)
     return score
+
 
 #F
 def check_length(message: str) -> int:
@@ -149,6 +177,7 @@ def check_length(message: str) -> int:
         logger.info("Message is < 75 chars long. No change to score")
     logger.info("Returned score: %s" % score)
     return score
+
 
 #G
 def check_spaces(message: str) -> int:
