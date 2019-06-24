@@ -1,6 +1,5 @@
 import React from 'react';
 import axios from 'axios';
-import logo from './logo.svg';
 import './App.css';
 import DetailCheckList from "./components/DetailCheckList";
 
@@ -27,7 +26,7 @@ class App extends React.Component {
   render() {
       return (
           <div className="App">
-            <div className="w-50 w-sm-100 mx-auto">
+            <div className="mx-auto">
               <h1 className="App-header"> ACNL Letter Scorer</h1>
               <textarea className="form-control mt-5"
                         placeholder="Enter your message here.."
