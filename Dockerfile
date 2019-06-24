@@ -2,7 +2,7 @@ FROM python:3.7-alpine
 RUN mkdir /server
 WORKDIR /server
 COPY server .
-RUN rm server/client/src
-RUN rm server/client/public
+RUN rm -r client/src
+RUN rm -r client/public
 RUN pip install -r requirements.txt
-ENTRYPOINT ["python", "server.npmpy"]
+ENTRYPOINT ["python", "server.py"]
